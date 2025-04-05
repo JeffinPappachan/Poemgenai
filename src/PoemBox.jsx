@@ -19,7 +19,8 @@ export default function PoemBox() {
     }
 
     try {
-      const apiKey = "AIzaSyBsYfncrMKkQqfeTk10NMjaj9buiOGVboI";
+      const apiKey = import.meta.env.VITE_GOOGLE_GEN_AI_KEY;
+      // console.log("API Key:", import.meta.env.VITE_GOOGLE_GEN_AI_KEY);
       const genAI = new GoogleGenerativeAI(apiKey);
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
       const result = await model.generateContent(prompt);
@@ -109,4 +110,3 @@ export default function PoemBox() {
     </div>
   );
 }
-
