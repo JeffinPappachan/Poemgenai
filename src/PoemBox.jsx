@@ -1,6 +1,7 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { useState } from "react";
 import "./PoemBox.css";
+import Clock from "./Clock";
 
 export default function PoemBox() {
   const [response, setResponse] = useState("");
@@ -49,8 +50,24 @@ export default function PoemBox() {
     setSavedPoems(updatedPoems);
   }
 
+  function sharePoem(poem, platform) {
+    const encodedPoem = encodeURIComponent(poem);
+    let shareUrl = "";
+
+    if (platform === "twitter") {
+      shareUrl = `https://twitter.com/intent/tweet?text=${encodedPoem}`;
+    } else if (platform === "whatsapp") {
+      shareUrl = `https://api.whatsapp.com/send?text=${encodedPoem}`;
+    }
+
+    if (shareUrl) {
+      window.open(shareUrl, "_blank"); // Open the share URL in a new tab
+    }
+  }
+
   return (
     <div className="poem-box">
+      <Clock />
       <h1 className="poem-title">AI Poem Generator</h1>
       <input
         type="text"
@@ -103,6 +120,18 @@ export default function PoemBox() {
             {/* Delete button */}
             <button onClick={() => deletePoem(index)} className="delete-button">
               Delete
+            </button>
+            <button
+              onClick={() => sharePoem(poem, "twitter")}
+              className="share-button twitter-button"
+            >
+              Share on Twitter
+            </button>
+            <button
+              onClick={() => sharePoem(poem, "whatsapp")}
+              className="share-button whatsapp-button"
+            >
+              Share on WhatsApp
             </button>
           </li>
         ))}
